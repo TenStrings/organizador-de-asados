@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title> {{ username }} </title>
+  </head>
+  <body>
+    <ul class="asadoslist">
+      {% for invite in invites %}
+      <li> {{ invite.asado }} </li>
+      {% endfor %}
+    </ul>
+  </body>
+</html>

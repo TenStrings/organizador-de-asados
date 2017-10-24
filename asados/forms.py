@@ -21,6 +21,9 @@ class AddAsadoForm(forms.ModelForm):
 
         fields = ['organizer','attendee','datetime','estimated_cost','place']
 
+    class Media:
+        js = ('asados/javascript/asado-form.js',)
+
 class AddUserForm(forms.ModelForm):
     class Meta:
         model = User

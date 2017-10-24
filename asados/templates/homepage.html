@@ -19,13 +19,15 @@
   <body>
     <ul id="asadoslist">
       {% for asado in lista_de_asados %}
-      <li class="asadoitem"> <a href="/asado-de-{{ asado.organizer }}"> {{ asado }} </a> </li>
+      <li class="asadoitem"> <a href="/asados/{{ asado.id }}"> {{ asado }} </a> </li>
       {% endfor %}
     </ul>
     <div class='form' >
       <form id='add-asado' method="post">
           {% csrf_token %}
+          <table>
           {{ form.as_table }}
+          </table>
           <input type="submit" value="Submit" />
       </form>
     </div>

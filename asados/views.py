@@ -25,10 +25,9 @@ def homepage(request):
                                           'form' : form
                                          }))
 
-def asado_de(request,an_organizer):
+def asado_id(request,a_valid_id):
     template = get_template('asado-de.html')
-    organizer = User.objects.get(name=an_organizer)
-    asado = Asado.objects.get(organizer=organizer)
+    asado = Asado.objects.get(id=a_valid_id)
     invites = asado.attendee.all()
 
     if request.method == 'POST':
