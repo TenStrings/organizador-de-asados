@@ -1,0 +1,33 @@
+.asadoitem {
+  list-style-type:        none;
+  display:                block;
+  margin-left:            5px;
+  margin-right:            5px;
+  font-family:            Georgia;
+  font-size:                15px;
+  background-color:        #eeeeee;
+  border:                 1px solid black;
+  padding: 0;
+}
+
+#asadoslist {
+  height: 200px;
+  overflow: auto;
+}
+add-asado {
+  display: inline-block;
+}
+
+div.form
+{
+    display: block;
+    text-align: center;
+}
+
+form
+{
+    display: inline-block;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: left;
+}

@@ -1,0 +1,15 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>
+      Agregar nuevo usuario
+    </title>
+  </head>
+  <body>
+    <form id="add-user" method="post">
+      {% csrf_token %}
+      {{ form.as_table }}
+      <input type="submit" value="Submit" />
+    </form>
+  </body>
+</html>
