@@ -47,6 +47,20 @@ def asado_de(request,an_organizer):
                                                     'form' : form
                                         }))
 
+def personal_page(request,username):
+    user = User.objects.get(name=username)
+    template = get_template('personal-page.html')
+    if request.method == 'POST':
+        pass
+    else:
+        pass
+    invites = Invitation.objects.filter(invite=user)
+    return HttpResponse(template.render(request=request,
+                                        context= {
+                                            'username' : user.name,
+                                            'invites' : invites,
+                                        }))
+
 def add_user(request):
     template = get_template('user-creation.html')
     if request.method == 'POST':

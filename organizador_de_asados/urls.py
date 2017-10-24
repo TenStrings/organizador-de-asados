@@ -20,6 +20,7 @@ from asados import views
 urlpatterns = [
     url(r'^$', views.homepage, name='home'),
     url(r'^asado-de-(.{1,99})/$',views.asado_de),
+    url(r'^(.{1,99})/$',views.personal_page),
     url(r'^asados/', include('asados.urls')),
     url(r'^admin/', admin.site.urls),
 ]

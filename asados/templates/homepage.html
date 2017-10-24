@@ -23,11 +23,11 @@
     </title>
   </head>
   <body>
-    <ol id="asadoslist">
-    {% for asado in lista_de_asados %}
-    <li class="asadoitem"> <a href="/asado-de-{{ asado.organizer }}"> {{ asado }} </a> </li>
-    {% endfor %}
-    </ol>
+    <ul id="asadoslist">
+      {% for asado in lista_de_asados %}
+      <li class="asadoitem"> <a href="/asado-de-{{ asado.organizer }}"> {{ asado }} </a> </li>
+      {% endfor %}
+    </ul>
     <div class='form' >
       <form id='add-asado' method="post">
           {% csrf_token %}
