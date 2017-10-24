@@ -25,7 +25,7 @@ SECRET_KEY = '6asbfp-t5qpyr9an$0ij_4ih(ec7wf-$h1#8p&ewz#60u&t(+3'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['tenstrings.pythonanywhere.com']
 
 
 # Application definition
@@ -124,3 +124,5 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
   os.path.join(BASE_DIR, 'static/'),
 )
+
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
