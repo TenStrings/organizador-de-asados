@@ -13,10 +13,10 @@ class Asado(models.Model):
     estimated_cost = models.DecimalField(max_digits=7,decimal_places=2)
     place = models.CharField(max_length=128, default='')
 
-    def __str__(self):
-        return 'Asado de ' + str(self.organizer) + ' | '\
-        + self.datetime.strftime('%A %b %Y') +\
-        ' | ' + str(self.place) + ' | ' + str(self.estimated_cost)
+    @property
+    def cost(self):
+        return "$%s" % self.estimated_cost
+
     class Meta:
         ordering = ['datetime']
 

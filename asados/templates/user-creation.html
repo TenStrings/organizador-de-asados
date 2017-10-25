@@ -1,15 +1,21 @@
 <html>
   <head>
     <meta charset="utf-8" />
+    {% load static %}
+    <link href="{% static "asados/css/basestyle.css"%}" rel="stylesheet" type="text/css"/>
     <title>
       Agregar nuevo usuario
     </title>
   </head>
   <body>
+    <div class="header">
+      Agregar un nuevo usuario
+    </div>
     <form id="add-user" method="post">
       {% csrf_token %}
       {{ form.as_table }}
       <input type="submit" value="Submit" />
     </form>
+    <a href='../../'> Página principal </a>
   </body>
 </html>
