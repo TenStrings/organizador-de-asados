@@ -1,0 +1,5 @@
+{% extends "list-of-asado.html" %}
+
+{% block url %}
+"{% url 'encargos' asado.id user %}"
+{% endblock %}

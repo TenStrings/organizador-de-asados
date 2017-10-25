@@ -4,15 +4,18 @@
       <tbody>
         {% for asado in asados %}
           <tr class="{% cycle 'asado_row1' 'asado_row2' %}">
-            {% for field in fields %}
-            <td>
-              <a href="{% url 'Asado' asado.id %}">
-                {% load getfield %}
-                {% getfield asado field as attr %}
-                {{ attr }}
-              </a>
-            </td>
-            {% endfor %}
+            {% load split_with %}
+              {% with fields="organizer,datetime,cost,place"|split_with:"," %}
+              {% for field in fields %}
+              <td>
+                <a href={% block url %}"{% url 'Asado' asado.id %}" {% endblock %}>
+                  {% load getfield %}
+                  {% getfield asado field as attr %}
+                  {{ attr }}
+                </a>
+              </td>
+              {% endfor %}
+            {% endwith %}
           </tr>
       {% endfor %}
       </tbody>

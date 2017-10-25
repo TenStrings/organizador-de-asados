@@ -9,13 +9,7 @@ def homepage(request):
     template = get_template('homepage.html')
     if request.method == 'POST':
         form = AddAsadoForm(request.POST)
-        new_asado = form.save(commit=False)
-        new_asado.save()
-        if form.is_valid():
-            for user_name in form.cleaned_data['attendee'].all():
-                user = User.objects.get(name=user_name)
-                invitation = Invitation.objects.create( invite=user,
-                                                        asado=new_asado)
+        new_asado = form.save()
     else:
         form = AddAsadoForm()
 
@@ -54,10 +48,11 @@ def personal_page(request,username):
     else:
         pass
     invites = Invitation.objects.filter(invite=user)
+    asados = [invite.asado for invite in invites ]
     return HttpResponse(template.render(request=request,
                                         context= {
                                             'username' : user.name,
-                                            'invites' : invites,
+                                            'asados' : asados,
                                         }))
 
 def add_user(request):
@@ -72,3 +67,6 @@ def add_user(request):
         request = request,
         context = {'form' : form}
     ))
+
+def pending_list(request,asado_id,username):
+    return HttpResponse("Cosas a comprar")

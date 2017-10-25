@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    {% load static %}
+    <link href="{% static "asados/css/basestyle.css"%}" rel="stylesheet" type="text/css"/>
+    {% block additional_statics %}
+
+    {% endblock %}
+    <title>{% block title% } Poneme un título {% endblock %}</title>
+  </head>
+  <body>
+    <div class="header">
+      {% block header %} Header {% endblock %}
+    </div>
+    <div class="content">
+      {% block content %} Content {% endblock %}
+    </div>
+  </body>
+</html>

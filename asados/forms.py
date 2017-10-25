@@ -1,6 +1,6 @@
 from django import forms
 from functools import partial
-from .models import Asado,User,Item
+from .models import Asado,User,Item,Invitation
 from datetimewidget.widgets import DateTimeWidget
 
 class AddAsadoForm(forms.ModelForm):
@@ -28,6 +28,16 @@ class AddAsadoForm(forms.ModelForm):
 
     class Media:
         js = ('asados/javascript/asado-form.js',)
+
+    def save(self, *args, **kwargs):
+        new_asado = super().save(*args,**kwargs,commit=False)
+        new_asado.save()
+        if self.is_valid():
+            for user_name in self.cleaned_data['attendee'].all():
+                user = User.objects.get(name=user_name)
+                invitation = Invitation.objects.create( invite=user,
+                                                        asado=new_asado)
+        return new_asado
 
 class AddUserForm(forms.ModelForm):
     class Meta:

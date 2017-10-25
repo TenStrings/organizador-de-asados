@@ -22,10 +22,7 @@
     <div class="header">
       <a href="/asados/add-user/" id="add_user_link"> Agregar nuevo usuario (signup)</a>
     </div>
-    {% load split_with %}
-    {% with f="organizer,datetime,cost,place"|split_with:"," %}
-    {% include 'list-of-asado.html' with asados=lista_de_asados fields=f %}
-    {% endwith %}
+    {% include 'list-of-asado.html' with asados=lista_de_asados %}
     <div class='form' >
       <p> Agregar un nuevo asado </p>
       <form id='add_asado' method="post">

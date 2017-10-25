@@ -5,7 +5,6 @@
 }
 
 table.asados_table {
-  height:200px;
   margin-left: auto;
   margin-right: auto;
 }
@@ -18,7 +17,7 @@ table.asados_table {
   background-color: lightgrey;
 }
 .asados_table tr:hover {
-   background: aquamarine;
+   background: red;
 }
 
 td a {
