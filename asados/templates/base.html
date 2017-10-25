@@ -3,15 +3,22 @@
   <head>
     <meta charset="utf-8">
     {% load static %}
+    <link href="{% static "asados/bootstrap/css/bootstrap.css"%}" rel="stylesheet" type="text/css"/>
     <link href="{% static "asados/css/basestyle.css"%}" rel="stylesheet" type="text/css"/>
+
     {% block additional_statics %}
 
     {% endblock %}
-    <title>{% block title% } Poneme un título {% endblock %}</title>
+    <title>{% block title %} Poneme un título {% endblock %}</title>
   </head>
   <body>
     <div class="header">
-      {% block header %} Header {% endblock %}
+      <div id="home_container">
+        <a href={% url 'home' %} id="home_button"> Home </a>
+      </div>
+      <div id="header_right">
+        {% block header %} Header {% endblock %}
+      </div>
     </div>
     <div class="content">
       {% block content %} Content {% endblock %}

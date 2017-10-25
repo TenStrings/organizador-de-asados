@@ -1,21 +1,20 @@
-<html>
-  <head>
-    <meta charset="utf-8" />
-    {% load static %}
-    <link href="{% static "asados/css/basestyle.css"%}" rel="stylesheet" type="text/css"/>
-    <title>
+{% extends "base.html" %}
+  {% block title %}
       Agregar nuevo usuario
-    </title>
-  </head>
-  <body>
-    <div class="header">
+  {% endblock %}
+  {% block header %}
       Agregar un nuevo usuario
-    </div>
+  {% endblock %}
+  {% block content %}
     <form id="add-user" method="post">
       {% csrf_token %}
+      <table>
       {{ form.as_table }}
-      <input type="submit" value="Submit" />
+      <tr>
+        <td>
+          <input type="submit" value="Submit" />
+        </td>
+      </tr>
+    </table>
     </form>
-    <a href='../../'> Página principal </a>
-  </body>
-</html>
+  {% endblock %}

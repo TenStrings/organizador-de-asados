@@ -9,3 +9,7 @@ body {
   height: 50px;
   width: auto;
 }
+
+#home_button {
+  float:left;
+}

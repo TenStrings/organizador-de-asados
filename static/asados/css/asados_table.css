@@ -17,7 +17,7 @@ table.asados_table {
   background-color: lightgrey;
 }
 .asados_table tr:hover {
-   background: red;
+   background: aquamarine;
 }
 
 td a {
