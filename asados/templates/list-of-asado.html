@@ -1,0 +1,21 @@
+{% if asados %}
+  <div class="asados_table_container">
+    <table class="asados_table">
+      <tbody>
+        {% for asado in asados %}
+          <tr class="{% cycle 'asado_row1' 'asado_row2' %}">
+            {% for field in fields %}
+            <td>
+              <a href="{% url 'Asado' asado.id %}">
+                {% load getfield %}
+                {% getfield asado field as attr %}
+                {{ attr }}
+              </a>
+            </td>
+            {% endfor %}
+          </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endif %}
