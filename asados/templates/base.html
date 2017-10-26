@@ -14,14 +14,15 @@
   <body>
     <div class="header">
       <div id="home_container">
-        <a href={% url 'home' %} id="home_button"> Home </a>
+        <span> <a href={% url 'home' %} id="home_button"> Home </a> </span>
+        <span> <a href={% url 'home' %} id="user_search"> Search user </a> </span>
       </div>
       <div id="header_right">
-        {% block header %} Header {% endblock %}
+        {% block header %}  {% endblock %}
       </div>
     </div>
     <div class="content">
-      {% block content %} Content {% endblock %}
+      {% block content %} {% endblock %}
     </div>
   </body>
 </html>

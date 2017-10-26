@@ -17,7 +17,13 @@
       Items a comprar:
       <ul id="invitadoslist">
       {% for item in items_a_comprar %}
-      <li class="invitadoitem"> {{ item }} </li>
+      <li class="invitadoitem"> {{ item }}
+        {% if not item.ready %}
+          &#x2610;
+        {% else %}
+          &#x2611;
+        {% endif %}
+          </li>
       {% endfor %}
     </div>
     <div class='form' >

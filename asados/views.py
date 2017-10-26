@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.template.loader import get_template
 from datetime import datetime
 from .models import Asado,User,Invitation
-from .forms import AddAsadoForm,AddUserForm,AddItemForm
+from .forms import AddAsadoForm,AddUserForm,AddAssignmentForm
 
 def homepage(request):
     template = get_template('homepage.html')
@@ -69,4 +69,12 @@ def add_user(request):
     ))
 
 def pending_list(request,asado_id,username):
-    return HttpResponse("Cosas a comprar")
+    template = get_template("shopping-list.html")
+    asado = Asado.objects.get(id=asado_id)
+    user = User.objects.get(name=username)
+    shopping_list = asado.items.filter(designated_user=user)
+
+    return HttpResponse(template.render(request=request,
+                                        context={
+                                            'shopping_list': shopping_list
+                                        }))

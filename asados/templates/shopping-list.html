@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+  {% block title %}
+    Lista de compras
+  {% endblock %}
+
+  {% block content %}
+  <ul>
+    {% for item in shopping_list %}
+      <li> {{ item }} </li>
+    {% endfor %}
+  </ul>
+  {% endblock %}

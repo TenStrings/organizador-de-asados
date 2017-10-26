@@ -1,6 +1,6 @@
 from django import forms
 from functools import partial
-from .models import Asado,User,Item,Invitation
+from .models import Asado,User,Assignment,Supply,Invitation
 from datetimewidget.widgets import DateTimeWidget
 
 class AddAsadoForm(forms.ModelForm):
@@ -45,11 +45,12 @@ class AddUserForm(forms.ModelForm):
         labels = { 'name' : 'Nombre' }
         fields = ['name']
 
-class AddItemForm(forms.ModelForm):
+class AddAssignmentForm(forms.ModelForm):
     class Meta:
-        model = Item
-        labels = { 'description' : u'Descripción',
-                    'estimated_cost' : 'Costo estimado',
+        model = Assignment
+        labels = {  'required_supply' : 'Insumo',
                     'designated_user' : 'Invitado designado',
-                    'comment' : 'Comentarios'}
-        fields = ['description','estimated_cost','designated_user','comment']
+                    'comment' : 'Comentarios',
+                    'required_quantity' : 'Cantidad' }
+
+        fields = ['designated_user','required_supply','required_quantity','comment']

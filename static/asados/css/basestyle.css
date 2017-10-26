@@ -13,3 +13,8 @@ body {
 #home_button {
   float:left;
 }
+
+span {
+  padding: 8px;
+  margin: 8px;
+}
