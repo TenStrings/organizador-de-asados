@@ -1,8 +1,8 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse,HttpResponseRedirect
 from django.template.loader import get_template
 from datetime import datetime
-from .models import Asado,User,Invitation
+from .models import Asado,User,Invitation,Assignment
 from .forms import AddAsadoForm,AddUserForm,AddAssignmentForm
 
 def homepage(request):
@@ -24,20 +24,27 @@ def asado_id(request,a_valid_id):
     asado = Asado.objects.get(id=a_valid_id)
     invites = asado.attendee.all()
 
+
     if request.method == 'POST':
-        form = AddItemForm(request.POST)
+        form = AddAssignmentForm(request.POST)
         new_item = form.save(commit=False)
         new_item.asado = asado
         new_item.save()
     else:
-        form = AddItemForm()
+        form = AddAssignmentForm()
         form.fields["designated_user"].queryset = asado.attendee.all()
 
-    items_to_buy = asado.items.all()
+    items_to_buy = asado.shop_list.all()
+    estimated_by_items = sum([ item.required_supply.estimated_cost for
+                               item in items_to_buy])
+
+    estimated_cost = asado.estimated_cost + estimated_by_items
+
     return HttpResponse(template.render(request = request,
-                                        context = {'lista_de_invitados' : invites,
+                                        context = { 'lista_de_invitados' : invites,
                                                     'items_a_comprar' : items_to_buy,
-                                                    'form' : form
+                                                    'form' : form,
+                                                    'estimated_cost' : estimated_cost
                                         }))
 
 def personal_page(request,username):
@@ -66,6 +73,18 @@ def add_user(request):
     return HttpResponse(template.render(
         request = request,
         context = {'form' : form}
+    ))
+
+def select_user(request):
+    template = get_template('user-select.html')
+
+    if request.method == "GET":
+        if 'username' in request.GET:
+            return HttpResponseRedirect('/'+request.GET['username']+'/')
+
+    return HttpResponse(template.render(
+        request = request,
+        context = { 'users': User.objects.all() }
     ))
 
 def pending_list(request,asado_id,username):

@@ -51,11 +51,14 @@ class Supply(models.Model):
     def cost(self):
         return "$%s" % self.estimated_cost
 
+    def __str__(self):
+        return self.description + ' ' + self.cost
+
 class Assignment(models.Model):
     designated_user = models.ForeignKey(User,on_delete=models.CASCADE)
     comment = models.CharField(max_length=256, default='')
     fullfilled = models.BooleanField(default=False)
-    asado = models.ForeignKey(Asado, related_name='assignments')
+    asado = models.ForeignKey(Asado, related_name='shop_list')
     required_supply = models.ForeignKey(Supply,on_delete=models.CASCADE)
     required_quantity = models.IntegerField(default=0)
 

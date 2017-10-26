@@ -1,0 +1,56 @@
+[
+  {
+    "model": "asados.Supply",
+    "pk": 1,
+    "fields": {
+      "kind": "drink",
+      "description": "Agua destilada",
+      "estimated_cost": "10"
+    }
+  },
+  {
+    "model": "asados.Supply",
+    "pk": 1,
+    "fields": {
+      "kind": "drink",
+      "description": "Hipoclorito de sodio",
+      "estimated_cost": "70"
+    }
+  },
+  {
+    "model": "asados.Supply",
+    "pk": 1,
+    "fields": {
+      "kind": "drink",
+      "description": "Combustible de cohete",
+      "estimated_cost": "3500"
+    }
+  },
+  {
+    "model": "asados.Supply",
+    "pk": 2,
+    "fields": {
+      "kind": "food",
+      "description": "Chorizo",
+      "estimated_cost": "15"
+    }
+  },
+  {
+    "model": "asados.Supply",
+    "pk": 3,
+    "fields": {
+      "kind": "food",
+      "description": "Morcilla",
+      "estimated_cost": "30"
+    }
+  },
+  {
+    "model": "asados.Supply",
+    "pk": 4,
+    "fields": {
+      "kind": "food",
+      "description": "Provoleta",
+      "estimated_cost": "40"
+    }
+  }
+]

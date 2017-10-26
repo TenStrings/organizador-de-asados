@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+  {% block title %}
+    Seleccionar usuario
+  {% endblock %}
+
+  {% block content %}
+  <form id="select" action="{% url 'seleccionar usuario' %}" method="get" accept-charset="utf-8"
+        autofocus="">
+    <select name="username" id="username">
+      {% for user in users %}
+        <option form="select" value={{ user.name }}> {{ user.name }} </option>
+      {% endfor %}
+    <input type="submit" value="Ir" />
+  </form>
+  {% endblock %}

@@ -6,25 +6,28 @@
 
     {% endblock %}
     {% block content %}
+    <h1> $ {{ estimated_cost }} </h1>
     <div id="invitados">
       Invitados:
       <ul id="invitadoslist">
-      {% for invitado in lista_de_invitados %}
-      <li class="invitadoitem"> {{ invitado }} </li>
-      {% endfor %}
+        {% for invitado in lista_de_invitados %}
+        <li class="invitadoitem"> {{ invitado }} </li>
+        {% endfor %}
+      </ul>
     </div>
     <div id="items">
       Items a comprar:
-      <ul id="invitadoslist">
-      {% for item in items_a_comprar %}
-      <li class="invitadoitem"> {{ item }}
-        {% if not item.ready %}
-          &#x2610;
-        {% else %}
-          &#x2611;
-        {% endif %}
-          </li>
-      {% endfor %}
+        <ul id="invitadoslist">
+          {% for item in items_a_comprar %}
+            <li class="invitadoitem"> {{ item.required_quantity }} - {{ item.required_supply }}
+              {% if not item.fullfilled %}
+                &#x2610;
+              {% else %}
+                &#x2611;
+              {% endif %}
+            </li>
+          {% endfor %}
+      </ul>
     </div>
     <div class='form' >
       Añadir item:

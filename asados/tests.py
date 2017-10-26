@@ -16,7 +16,7 @@ class AssignmentTestCase(TestCase):
                               estimated_cost=100)
 
         alibaba = User.objects.create(name="Alibaba")
-        simbad = User.objects.create(name="Simbad")
+        sinbad = User.objects.create(name="Sinbad")
         aladdin = User.objects.create(name="Aladdin")
 
         date = timezone.now()
@@ -25,12 +25,12 @@ class AssignmentTestCase(TestCase):
                                       place='Arabia',
                                       estimated_cost=200)
 
-        Invitation(asado=asado,invite=simbad)
+        Invitation(asado=asado,invite=sinbad)
         Invitation(asado=asado,invite=aladdin)
 
         self.drink_assignment = Assignment.objects.create(
                                                       asado=asado,
-                                                      designated_user=simbad,
+                                                      designated_user=sinbad,
                                                       comment="2L",
                                                       required_supply=space_cola,
                                                       required_quantity=3)
