@@ -1,9 +1,11 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from django.http import HttpResponse,HttpResponseRedirect
 from django.template.loader import get_template
 from datetime import datetime
-from .models import Asado,User,Invitation,Assignment
+from .models import Asado,User,Invitation,Assignment,AssignmentValidationError
 from .forms import AddAsadoForm,AddUserForm,AddAssignmentForm
+from django.core.exceptions import ValidationError
+from django.urls import reverse
 
 def homepage(request):
     template = get_template('homepage.html')
@@ -24,7 +26,6 @@ def asado_id(request,a_valid_id):
     asado = Asado.objects.get(id=a_valid_id)
     invites = asado.attendee.all()
 
-
     if request.method == 'POST':
         form = AddAssignmentForm(request.POST)
         new_item = form.save(commit=False)
@@ -35,7 +36,7 @@ def asado_id(request,a_valid_id):
         form.fields["designated_user"].queryset = asado.attendee.all()
 
     items_to_buy = asado.shop_list.all()
-    estimated_by_items = sum([ item.required_supply.estimated_cost for
+    estimated_by_items = sum([ item.estimated_cost()  for
                                item in items_to_buy])
 
     estimated_cost = asado.estimated_cost + estimated_by_items
@@ -91,9 +92,36 @@ def pending_list(request,asado_id,username):
     template = get_template("shopping-list.html")
     asado = Asado.objects.get(id=asado_id)
     user = User.objects.get(name=username)
-    shopping_list = asado.items.filter(designated_user=user)
+    shopping_list = asado.shop_list.filter( designated_user=user,
+                                            fullfilled=False)
 
     return HttpResponse(template.render(request=request,
                                         context={
                                             'shopping_list': shopping_list
+                                        }))
+
+def commit_assignment(request,assignment_id):
+    template = get_template("commit-assignment.html")
+    assignment = Assignment.objects.get(id=assignment_id)
+    error_message = ''
+
+    if request.method == 'POST':
+        try:
+            quantity = int(request.POST['quantity'])
+        except ValueError:
+            raise ValidationError("Se esperaba un número")
+
+        try:
+            assignment.finished_with(quantity)
+            return redirect(reverse('encargos',args=[
+                                            assignment.asado.id,
+                                            assignment.designated_user.name
+                                            ]))
+        except AssignmentValidationError as e:
+            error_message = e.message
+
+    return HttpResponse(template.render(request=request,
+                                        context={
+                                        'assignment': assignment,
+                                        'error_message' : error_message
                                         }))

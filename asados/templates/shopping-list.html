@@ -6,7 +6,17 @@
   {% block content %}
   <ul>
     {% for item in shopping_list %}
-      <li> {{ item }} </li>
+      <li>  <a href={% url 'confirmar encargo' item.id %}>
+              {{ item.required_quantity }} {{ item.required_supply }} :
+              Total: $ {{ item.estimated_cost }} </a></li>
+              <details>
+                <summary>
+                  Comentarios adicionales
+                </summary>
+              {{ item.comment }}
+              </details>
+    {% empty %}
+      <li> No hay ningún encargo del cual ocuparse </li>
     {% endfor %}
   </ul>
   {% endblock %}

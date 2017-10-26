@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}
+  Confirmar resolución
+{% endblock %}
+{% block content %}
+<h5> {{ assignment.required_supply }} </h5>
+<h5> Unidades pedidas: {{ assignment.required_quantity }} </h5>
+  <form id="confirm_assignment" method="post">
+      {% csrf_token %}
+      <input type="number" name="quantity" id="quantity"/>
+      <input type="submit" value="Confirmar" />
+  </form>
+  {{ error_message }}
+{% endblock %}

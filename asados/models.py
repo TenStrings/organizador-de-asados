@@ -1,6 +1,5 @@
 from django.db import models
 from django.core.validators import validate_unicode_slug
-import datetime
 import sys
 
 class User(models.Model):
@@ -54,7 +53,12 @@ class Supply(models.Model):
     def __str__(self):
         return self.description + ' ' + self.cost
 
+class AssignmentValidationError(Exception):
+    def __init__(self,message):
+        self.message = message
+
 class Assignment(models.Model):
+
     designated_user = models.ForeignKey(User,on_delete=models.CASCADE)
     comment = models.CharField(max_length=256, default='')
     fullfilled = models.BooleanField(default=False)
@@ -62,17 +66,22 @@ class Assignment(models.Model):
     required_supply = models.ForeignKey(Supply,on_delete=models.CASCADE)
     required_quantity = models.IntegerField(default=0)
 
+    def estimated_cost(self):
+        return self.required_quantity * self.required_supply.estimated_cost
+
     def finished_with(self,quantity):
         self.required_supply.validate(self,quantity)
+        self.save()
 
     def validate_for_food(self,quantity):
         if quantity == self.required_quantity:
             self.fullfilled = True
-        #else return error?
+        else:
+            error_message = 'Deben confirmarse todas las unidas requeridas de comida'
+            raise AssignmentValidationError(error_message)
 
     def validate_for_drink(self,quantity):
         self.fullfilled = True
-
 
 
 class DrinkSupply(Supply):

@@ -4,6 +4,6 @@ $(document).ready(function() {
       $(this).show();
     });
     var organizerName = $(this).find("option:selected").text();
-    $('#id_attendee option[value=' + organizerName + ']').hide();
+    $('#id_attendee option[value=' + organizerName + ']').hide().prop("selected", false);
   })
 });
