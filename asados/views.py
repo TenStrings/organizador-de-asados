@@ -39,7 +39,7 @@ def asado_id(request,a_valid_id):
     estimated_by_items = sum([ item.estimated_cost()  for
                                item in items_to_buy])
 
-    estimated_cost = asado.estimated_cost + estimated_by_items
+    estimated_cost = asado.estimated_cost
 
     return HttpResponse(template.render(request = request,
                                         context = { 'lista_de_invitados' : invites,

@@ -1,6 +1,8 @@
 from django.db import models
 from django.core.validators import validate_unicode_slug
 import sys
+from functools import partial
+from collections import defaultdict
 
 class User(models.Model):
     name = models.CharField(max_length=128, primary_key=True,
@@ -12,12 +14,13 @@ class Asado(models.Model):
     organizer = models.ForeignKey(User, on_delete=models.CASCADE,related_name='Organizador')
     attendee = models.ManyToManyField(User, through='Invitation',related_name='Invitados')
     datetime = models.DateTimeField()
-    estimated_cost = models.DecimalField(max_digits=7,decimal_places=2)
     place = models.CharField(max_length=128, default='')
 
     @property
-    def cost(self):
-        return "$%s" % self.estimated_cost
+    def estimated_cost(self):
+        estimated_by_items = sum([ assignment.estimated_cost for
+                                    assignment in self.shop_list.all()])
+        return "$ %s" % estimated_by_items
 
     class Meta:
         ordering = ['datetime']
@@ -28,7 +31,6 @@ class Invitation(models.Model):
     asado = models.ForeignKey(Asado, on_delete=models.CASCADE)
 
 class Supply(models.Model):
-    #Podría usar __subclasses__ y hacer un find_first alla Hernán también (?)
     VALID_OPTIONS = (
         ('drink', 'Drink'),
         ('food', 'Food'),
@@ -40,11 +42,6 @@ class Supply(models.Model):
 
     def validate(self,an_assignment,quantity):
         raise NotImplementedError("You must provide a subclass of Supply with a definition for validate")
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        if self.kind:
-            self.__class__ = getattr(sys.modules[__name__], self.kind.title() + self.__class__.__name__)
 
     @property
     def cost(self):
@@ -70,29 +67,30 @@ class Assignment(models.Model):
         return self.required_quantity * self.required_supply.estimated_cost
 
     def finished_with(self,quantity):
-        self.required_supply.validate(self,quantity)
+        kind_of_supply = self.required_supply.kind
+        rule = self.rule_for(kind_of_supply)
+        rule(self,quantity)
         self.save()
 
-    def validate_for_food(self,quantity):
+    def rule_for(self,a_kind_of_supply):
+        try:
+            return self.__class__.validation_rules[a_kind_of_supply]
+        except KeyError as e:
+            raise AssignmentValidationError('Unsupported kind of supply')
+
+    #Esto se puede abstraer en clases
+
+    def rule_for_food(self,quantity):
         if quantity == self.required_quantity:
             self.fullfilled = True
         else:
             error_message = 'Deben confirmarse todas las unidas requeridas de comida'
             raise AssignmentValidationError(error_message)
 
-    def validate_for_drink(self,quantity):
+    def rule_for_drink(self,quantity):
         self.fullfilled = True
 
-
-class DrinkSupply(Supply):
-    def validate(self,an_assignment,quantity):
-        an_assignment.validate_for_drink(quantity)
-    class Meta:
-        proxy = True
-
-
-class FoodSupply(Supply):
-    def validate(self,an_assignment,quantity):
-        an_assignment.validate_for_food(quantity)
-    class Meta:
-        proxy = True
+    validation_rules = {
+            'food': rule_for_food,
+            'drink': rule_for_drink,
+    }

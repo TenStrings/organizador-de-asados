@@ -21,10 +21,9 @@ class AddAsadoForm(forms.ModelForm):
         labels = { 'organizer' : 'Organizador',
                    'attendee'  : 'Invitados',
                    'datetime'  : 'Fecha',
-                   'estimated_cost': 'Costo estimado',
                    'place' : 'Lugar' }
 
-        fields = ['organizer','attendee','datetime','estimated_cost','place']
+        fields = ['organizer','attendee','datetime','place']
 
     class Media:
         js = ('asados/javascript/asado-form.js',)

@@ -1,6 +1,6 @@
 from django.test import TestCase
 from django.utils import timezone
-from .models import User,Asado,Invitation,Assignment,Supply
+from .models import User,Asado,Invitation,Assignment,Supply,AssignmentValidationError
 from datetime import datetime
 # Create your tests here.
 
@@ -22,8 +22,7 @@ class AssignmentTestCase(TestCase):
         date = timezone.now()
         asado = Asado.objects.create( organizer=alibaba,
                                       datetime=date,
-                                      place='Arabia',
-                                      estimated_cost=200)
+                                      place='Arabia' )
 
         Invitation(asado=asado,invite=sinbad)
         Invitation(asado=asado,invite=aladdin)
@@ -58,5 +57,6 @@ class AssignmentTestCase(TestCase):
 
     def test04_can_not_finish_food_with_any_quantity(self):
         assignment = self.food_assignment
-        assignment.finished_with(25)
-        self.assertFalse(assignment.fullfilled)
+        with self.assertRaises(AssignmentValidationError):
+            assignment.finished_with(25)
+            self.assertFalse(assignment.fullfilled)
