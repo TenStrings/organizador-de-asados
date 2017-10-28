@@ -20,10 +20,12 @@ class AddAsadoForm(forms.ModelForm):
             usel10n=True,
             options=dateTimeOptions)
         }
-        labels = { 'organizer' : 'Organizador',
-                   'attendee'  : 'Invitados',
-                   'datetime'  : 'Fecha',
-                   'place' : 'Lugar' }
+        labels = {
+            'organizer' : 'Organizador',
+            'attendee'  : 'Invitados',
+            'datetime'  : 'Fecha',
+            'place' : 'Lugar'
+        }
 
         fields = ['organizer','attendee','datetime','place']
 
@@ -44,22 +46,33 @@ class AddAsadoForm(forms.ModelForm):
         if self.is_valid():
             for user_name in self.cleaned_data['attendee'].all():
                 user = User.objects.get(name=user_name)
-                invitation = Invitation.objects.create( invite=user,
-                                                        asado=new_asado)
+                invitation = Invitation.objects.create(
+                    invite=user,
+                    asado=new_asado
+                )
         return new_asado
 
 class AddUserForm(forms.ModelForm):
     class Meta:
         model = User
-        labels = { 'name' : 'Nombre' }
+        labels = {
+            'name' : 'Nombre'
+        }
         fields = ['name']
 
 class AddAssignmentForm(forms.ModelForm):
     class Meta:
         model = Assignment
-        labels = {  'required_supply' : 'Insumo',
-                    'designated_user' : 'Invitado designado',
-                    'comment' : 'Comentarios',
-                    'required_quantity' : 'Cantidad' }
+        labels = {
+            'required_supply' : 'Insumo',
+            'designated_user' : 'Invitado designado',
+            'comment' : 'Comentarios',
+            'required_quantity' : 'Cantidad'
+        }
 
-        fields = ['designated_user','required_supply','required_quantity','comment']
+        fields = [
+            'designated_user',
+            'required_supply',
+            'required_quantity',
+            'comment'
+            ]

@@ -12,8 +12,16 @@ class User(models.Model):
         return self.name
 
 class Asado(models.Model):
-    organizer = models.ForeignKey(User, on_delete=models.CASCADE,related_name='Organizador')
-    attendee = models.ManyToManyField(User, through='Invitation',related_name='Invitados')
+    organizer = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='Organizador'
+    )
+    attendee = models.ManyToManyField(
+        User,
+        through='Invitation',
+        related_name='Invitados'
+    )
     datetime = models.DateTimeField()
     place = models.CharField(max_length=128, default='')
 
@@ -63,8 +71,8 @@ class Assignment(models.Model):
     def finished_with(self,quantity):
 
         rule = AssignmentValidationRule.rule_for(
-                self.required_supply
-            )
+            self.required_supply
+        )
         self.fullfilled = rule.fullfills_for(self,quantity)
         self.save()
 

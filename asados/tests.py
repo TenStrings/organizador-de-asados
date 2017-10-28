@@ -7,40 +7,47 @@ from datetime import datetime
 class AssignmentTestCase(TestCase):
     def setUp(self):
 
-        space_cola = Supply.objects.create(kind="drink",
-                              description='Space-Cola',
-                              estimated_cost=25)
+        space_cola = Supply.objects.create(
+            kind="drink",
+            description='Space-Cola',
+            estimated_cost=25
+        )
 
-        colugo_head = Supply.objects.create(kind="food",
-                              description="Colugo's head",
-                              estimated_cost=100)
+        colugo_head = Supply.objects.create(
+            kind="food",
+            description="Colugo's head",
+            estimated_cost=100
+        )
 
         alibaba = User.objects.create(name="Alibaba")
         sinbad = User.objects.create(name="Sinbad")
         aladdin = User.objects.create(name="Aladdin")
 
         date = timezone.now()
-        asado = Asado.objects.create( organizer=alibaba,
-                                      datetime=date,
-                                      place='Arabia' )
+        asado = Asado.objects.create(
+            organizer=alibaba,
+            datetime=date,
+            place='Arabia'
+        )
 
         Invitation(asado=asado,invite=sinbad)
         Invitation(asado=asado,invite=aladdin)
 
         self.drink_assignment = Assignment.objects.create(
-                                                      asado=asado,
-                                                      designated_user=sinbad,
-                                                      comment="2L",
-                                                      required_supply=space_cola,
-                                                      required_quantity=3)
+            asado=asado,
+            designated_user=sinbad,
+            comment="2L",
+            required_supply=space_cola,
+            required_quantity=3
+        )
 
         self.food_assignment = Assignment.objects.create(
-                                                     asado=asado,
-                                                     designated_user=aladdin,
-                                                     required_supply=colugo_head,
-                                                     comment="spicy please",
-                                                     required_quantity=4)
-
+            asado=asado,
+            designated_user=aladdin,
+            required_supply=colugo_head,
+            comment="spicy please",
+            required_quantity=4
+        )
 
     def test01_creation_works(self):
         pass

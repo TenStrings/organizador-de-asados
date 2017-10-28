@@ -12,6 +12,7 @@ def homepage(request):
     if request.method == 'POST':
         form = AddAsadoForm(request.POST)
         new_asado = form.save()
+        return HttpResponseRedirect('')
     else:
         form = AddAsadoForm()
 
@@ -36,6 +37,7 @@ def asado_id(request,a_valid_id):
         new_item = form.save(commit=False)
         new_item.asado = asado
         new_item.save()
+        return HttpResponseRedirect('')
     else:
         form = AddAssignmentForm()
         form.fields["designated_user"].queryset = asado.attendee.all()
