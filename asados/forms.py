@@ -2,6 +2,7 @@ from django import forms
 from functools import partial
 from .models import Asado,User,Assignment,Supply,Invitation
 from datetimewidget.widgets import DateTimeWidget
+from django.utils import timezone
 
 class AddAsadoForm(forms.ModelForm):
     class Meta:
@@ -9,7 +10,8 @@ class AddAsadoForm(forms.ModelForm):
         dateTimeOptions = {
         'format': 'dd/mm/yyyy HH:ii P',
         'autoclose': True,
-        'showMeridian' : True
+        'showMeridian' : True,
+        'startDate': str(timezone.now())
         }
         widgets = {
             #Use localization and bootstrap 3
@@ -22,6 +24,13 @@ class AddAsadoForm(forms.ModelForm):
                    'attendee'  : 'Invitados',
                    'datetime'  : 'Fecha',
                    'place' : 'Lugar' }
+
+
+        def clean_datetime(self):
+            datetime = self.cleaned_data['datetime']
+            if datetime < timezone.now():
+                raise forms.ValidationError("The date cannot be in the past!")
+            return datetime
 
         fields = ['organizer','attendee','datetime','place']
 
