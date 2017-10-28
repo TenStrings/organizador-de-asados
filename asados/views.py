@@ -16,10 +16,15 @@ def homepage(request):
         form = AddAsadoForm()
 
     asados = Asado.objects.all()
-    return HttpResponse(template.render( request = request,
-                                         context = {'lista_de_asados' : asados,
-                                          'form' : form
-                                         }))
+    return HttpResponse(
+        template.render(
+            request = request,
+            context = {
+                'lista_de_asados' : asados,
+                'form' : form
+            }
+        )
+    )
 
 def asado_id(request,a_valid_id):
     template = get_template('asado-de.html')
@@ -36,44 +41,55 @@ def asado_id(request,a_valid_id):
         form.fields["designated_user"].queryset = asado.attendee.all()
 
     items_to_buy = asado.shop_list.all()
-    estimated_by_items = sum([ item.estimated_cost()  for
-                               item in items_to_buy])
+    estimated_by_items = sum(
+        [ item.estimated_cost() for item in items_to_buy ]
+    )
 
     estimated_cost = asado.estimated_cost
 
-    return HttpResponse(template.render(request = request,
-                                        context = { 'lista_de_invitados' : invites,
-                                                    'items_a_comprar' : items_to_buy,
-                                                    'form' : form,
-                                                    'estimated_cost' : estimated_cost
-                                        }))
+    return HttpResponse(
+                template.render(
+                    request = request,
+                    context = {
+                        'lista_de_invitados' : invites,
+                        'items_a_comprar' : items_to_buy,
+                        'form' : form,
+                        'estimated_cost' : estimated_cost
+                    }
+                )
+            )
 
 def personal_page(request,username):
     user = User.objects.get(name=username)
     template = get_template('personal-page.html')
-    if request.method == 'POST':
-        pass
-    else:
-        pass
+
     invites = Invitation.objects.filter(invite=user)
     asados = [invite.asado for invite in invites ]
-    return HttpResponse(template.render(request=request,
-                                        context= {
-                                            'username' : user.name,
-                                            'asados' : asados,
-                                        }))
+    return HttpResponse(
+        template.render(
+            request=request,
+            context= {
+                'username' : user.name,
+                'asados' : asados,
+            }
+        )
+    )
 
 def add_user(request):
     template = get_template('user-creation.html')
     if request.method == 'POST':
         form = AddUserForm(request.POST)
         new_user = form.save()
+        return HttpResponseRedirect('')
     else:
         form = AddUserForm()
 
     return HttpResponse(template.render(
         request = request,
-        context = {'form' : form}
+        context = {
+            'form' : form,
+            'users' : User.objects.all()
+        }
     ))
 
 def select_user(request):
@@ -92,13 +108,19 @@ def pending_list(request,asado_id,username):
     template = get_template("shopping-list.html")
     asado = Asado.objects.get(id=asado_id)
     user = User.objects.get(name=username)
-    shopping_list = asado.shop_list.filter( designated_user=user,
-                                            fullfilled=False)
+    shopping_list = asado.shop_list.filter(
+        designated_user=user,
+        fullfilled=False
+    )
 
-    return HttpResponse(template.render(request=request,
-                                        context={
-                                            'shopping_list': shopping_list
-                                        }))
+    return HttpResponse(
+        template.render(
+            request=request,
+            context={
+                'shopping_list': shopping_list
+            }
+        )
+    )
 
 def commit_assignment(request,assignment_id):
     template = get_template("commit-assignment.html")
@@ -113,15 +135,24 @@ def commit_assignment(request,assignment_id):
 
         try:
             assignment.finished_with(quantity)
-            return redirect(reverse('encargos',args=[
-                                            assignment.asado.id,
-                                            assignment.designated_user.name
-                                            ]))
+            return redirect(
+                reverse(
+                    'encargos',
+                    args=[
+                            assignment.asado.id,
+                            assignment.designated_user.name
+                    ]
+                )
+            )
         except AssignmentValidationError as e:
             error_message = e.message
 
-    return HttpResponse(template.render(request=request,
-                                        context={
-                                        'assignment': assignment,
-                                        'error_message' : error_message
-                                        }))
+    return HttpResponse(
+        template.render(
+            request=request,
+            context={
+            'assignment': assignment,
+            'error_message' : error_message
+            }
+        )
+    )

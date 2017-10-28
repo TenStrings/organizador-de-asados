@@ -18,3 +18,8 @@ span {
   padding: 8px;
   margin: 8px;
 }
+
+#userlist {
+  max-height: 70%;
+  overflow: auto;
+}

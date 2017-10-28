@@ -2,6 +2,15 @@
   {% block title %}
       Agregar nuevo usuario
   {% endblock %}
+  {% block additional_statics %}
+    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+    <script type="text/javascript">
+      $( document ).ready(function() {
+        $( "#id_name" ).attr("tabindex","1")
+        $( "#submit").attr("tabindex",2)
+      });
+    </script>
+  {% endblock %}
   {% block header %}
       Agregar un nuevo usuario
   {% endblock %}
@@ -12,9 +21,17 @@
       {{ form.as_table }}
       <tr>
         <td>
-          <input type="submit" value="Submit" />
+          <input id="submit" type="submit" value="Submit" />
         </td>
       </tr>
+      <tr>
+    </tr>
     </table>
     </form>
+    Usuarios:
+    <ul id='userlist'>
+      {% for user in users %}
+        <li> {{ user }} </li>
+      {% endfor %}
+    </ul>
   {% endblock %}

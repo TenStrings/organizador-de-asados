@@ -25,14 +25,15 @@ class AddAsadoForm(forms.ModelForm):
                    'datetime'  : 'Fecha',
                    'place' : 'Lugar' }
 
-
-        def clean_datetime(self):
-            datetime = self.cleaned_data['datetime']
-            if datetime < timezone.now():
-                raise forms.ValidationError("The date cannot be in the past!")
-            return datetime
-
         fields = ['organizer','attendee','datetime','place']
+
+    def clean_datetime(self):
+        print('is called')
+        datetime = self.cleaned_data['datetime']
+        if datetime < timezone.now():
+            raise forms.ValidationError('Esa fecha ya pasó')
+        return datetime
+
 
     class Media:
         js = ('asados/javascript/asado-form.js',)
