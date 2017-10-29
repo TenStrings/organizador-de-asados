@@ -36,15 +36,15 @@ def homepage(request):
 
 
 def asado_id(request, a_valid_id):
-    template = get_template('asado-de.html')
+    template = get_template('asado.html')
     asado = Asado.objects.get(id=a_valid_id)
     invites = asado.attendee.all()
 
     if request.method == 'POST':
         form = AddAssignmentForm(request.POST)
-        new_item = form.save(commit=False)
-        new_item.asado = asado
-        new_item.save()
+        new_assignment = form.save(commit=False)
+        new_assignment.asado = asado
+        new_assignment.save()
         return HttpResponseRedirect('')
     else:
         form = AddAssignmentForm()

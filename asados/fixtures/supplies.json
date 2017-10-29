@@ -22,8 +22,8 @@
     "pk": 1,
     "fields": {
       "kind": "drink",
-      "description": "Combustible de cohete",
-      "estimated_cost": "3500"
+      "description": "Espectacola",
+      "estimated_cost": "45"
     }
   },
   {
