@@ -19,7 +19,11 @@ def homepage(request):
     if request.method == 'POST':
         form = AddAsadoForm(request.POST)
         new_asado = form.save()
-        return HttpResponseRedirect('')
+        return HttpResponseRedirect(
+            reverse(
+                'home'
+            )
+        )
     else:
         form = AddAsadoForm()
 
@@ -45,7 +49,14 @@ def asado_id(request, a_valid_id):
         new_assignment = form.save(commit=False)
         new_assignment.asado = asado
         new_assignment.save()
-        return HttpResponseRedirect('')
+        return HttpResponseRedirect(
+            reverse(
+                'asado',
+                args=[
+                    a_valid_id
+                ]
+            )
+        )
     else:
         form = AddAssignmentForm()
         form.fields["designated_user"].queryset = asado.attendee.all()
@@ -92,7 +103,11 @@ def add_user(request):
     if request.method == 'POST':
         form = AddUserForm(request.POST)
         new_user = form.save()
-        return HttpResponseRedirect('')
+        return HttpResponseRedirect(
+            reverse(
+                'agregar usuario',
+            )
+        )
     else:
         form = AddUserForm()
 
@@ -110,7 +125,12 @@ def select_user(request):
 
     if request.method == "GET":
         if 'username' in request.GET:
-            return HttpResponseRedirect('/'+request.GET['username']+'/')
+            return HttpResponseRedirect(
+                reverse(
+                    'personal',
+                    args=[request.GET['username']]
+                )
+            )
 
     return HttpResponse(template.render(
         request=request,

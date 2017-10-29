@@ -8,7 +8,7 @@
               {% with fields="organizer,datetime,estimated_cost,place"|split_with:"," %}
               {% for field in fields %}
               <td>
-                <a href={% block url %}"{% url 'Asado' asado.id %}" {% endblock %}>
+                <a href={% block url %}"{% url 'asado' asado.id %}" {% endblock %}>
                   {% load getfield %}
                   {% getfield asado field as attr %}
                   {{ attr }}
