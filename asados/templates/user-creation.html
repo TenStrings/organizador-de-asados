@@ -15,7 +15,7 @@
       Agregar un nuevo usuario
   {% endblock %}
   {% block content %}
-    Debe contener solo letras(unicode) números y guiones bajos(_)
+    <small>Debe contener solo letras(unicode) números o guiones bajos(_)</small>
     <form id="add-user" method="post">
       {% csrf_token %}
       <table>

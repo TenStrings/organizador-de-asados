@@ -42,10 +42,10 @@ class Asado(models.Model):
     class Meta:
         ordering = ['datetime']
 
-    DATETIME_VALIDATION_ERROR = 'datetime must be in the future'
+    DATETIME_VALIDATION_ERROR = 'La fecha no debe haber pasado'
 
     def clean(self):
-        if self.datetime + timedelta(milliseconds=100) < timezone.now():
+        if self.datetime < timezone.now():
             raise ValidationError(
                 {'datetime': self.__class__.DATETIME_VALIDATION_ERROR}
             )

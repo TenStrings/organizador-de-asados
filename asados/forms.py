@@ -3,16 +3,18 @@ from functools import partial
 from .models import Asado, User, Assignment, Supply, Invitation
 from datetimewidget.widgets import DateTimeWidget
 from django.utils import timezone
+from django.core.exceptions import ValidationError
 
 
 class AddAsadoForm(forms.ModelForm):
     class Meta:
         model = Asado
         dateTimeOptions = {
-            'format': 'dd/mm/yyyy HH:ii P',
+            'format': 'dd/mm/yyyy hh:ii',
             'autoclose': True,
             'showMeridian': True,
-            'startDate': str(timezone.now())
+            'clearBtn': True,
+            'startDate': timezone.now().strftime('0%w/%d/%Y %H:%M:00')
         }
         widgets = {
             # Use localization and bootstrap 3
@@ -31,26 +33,21 @@ class AddAsadoForm(forms.ModelForm):
 
         fields = ['organizer', 'attendee', 'datetime', 'place']
 
-    def clean_datetime(self):
-        datetime = self.cleaned_data['datetime']
-        if datetime < timezone.now():
-            raise forms.ValidationError('Esa fecha ya pasó')
-        return datetime
-
     class Media:
         js = ('asados/javascript/asado-form.js',)
 
     def save(self, *args, **kwargs):
-        new_asado = super().save(*args, **kwargs, commit=False)
-        new_asado.save()
+        print(timezone.now().strftime('0%w/%d/%Y %H:%M:00'))
         if self.is_valid():
+            new_asado = super().save(*args, **kwargs, commit=False)
+            new_asado.save()
             for user_name in self.cleaned_data['attendee'].all():
                 user = User.objects.get(name=user_name)
                 invitation = Invitation.objects.create(
                     invite=user,
                     asado=new_asado
                 )
-        return new_asado
+            return new_asado
 
 
 class AddUserForm(forms.ModelForm):

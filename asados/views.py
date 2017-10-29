@@ -19,11 +19,12 @@ def homepage(request):
     if request.method == 'POST':
         form = AddAsadoForm(request.POST)
         new_asado = form.save()
-        return HttpResponseRedirect(
-            reverse(
-                'home'
+        if not form.errors:
+            return HttpResponseRedirect(
+                reverse(
+                    'home'
+                )
             )
-        )
     else:
         form = AddAsadoForm()
 
