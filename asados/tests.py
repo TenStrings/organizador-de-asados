@@ -15,7 +15,7 @@ class AsadoTest(TestCase):
 
         self.asado = Asado.objects.create(
             organizer=self.pyetr,
-            datetime=timezone.now(),
+            datetime=timezone.now() + timedelta(days=1),
             place='Russya'
         )
 
@@ -73,7 +73,7 @@ class AssignmentTestCase(TestCase):
         sinbad = User.objects.create(name="Sinbad")
         aladdin = User.objects.create(name="Aladdin")
 
-        date = timezone.now()
+        date = timezone.now() + timedelta(days=1)
         asado = Asado.objects.create(
             organizer=alibaba,
             datetime=date,
