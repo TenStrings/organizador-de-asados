@@ -1,33 +1,35 @@
 from django import forms
 from functools import partial
-from .models import Asado,User,Assignment,Supply,Invitation
+from .models import Asado, User, Assignment, Supply, Invitation
 from datetimewidget.widgets import DateTimeWidget
 from django.utils import timezone
+
 
 class AddAsadoForm(forms.ModelForm):
     class Meta:
         model = Asado
         dateTimeOptions = {
-        'format': 'dd/mm/yyyy HH:ii P',
-        'autoclose': True,
-        'showMeridian' : True,
-        'startDate': str(timezone.now())
+            'format': 'dd/mm/yyyy HH:ii P',
+            'autoclose': True,
+            'showMeridian': True,
+            'startDate': str(timezone.now())
         }
         widgets = {
-            #Use localization and bootstrap 3
-            'datetime': DateTimeWidget( attrs={'id':"yourdatetimeid"},
-            bootstrap_version=3,
-            usel10n=True,
-            options=dateTimeOptions)
+            # Use localization and bootstrap 3
+            'datetime': DateTimeWidget(
+                attrs={'id': "yourdatetimeid"},
+                bootstrap_version=3,
+                usel10n=True,
+                options=dateTimeOptions)
         }
         labels = {
-            'organizer' : 'Organizador',
-            'attendee'  : 'Invitados',
-            'datetime'  : 'Fecha',
-            'place' : 'Lugar'
+            'organizer': 'Organizador',
+            'attendee': 'Invitados',
+            'datetime': 'Fecha',
+            'place': 'Lugar'
         }
 
-        fields = ['organizer','attendee','datetime','place']
+        fields = ['organizer', 'attendee', 'datetime', 'place']
 
     def clean_datetime(self):
         print('is called')
@@ -36,12 +38,11 @@ class AddAsadoForm(forms.ModelForm):
             raise forms.ValidationError('Esa fecha ya pasó')
         return datetime
 
-
     class Media:
         js = ('asados/javascript/asado-form.js',)
 
     def save(self, *args, **kwargs):
-        new_asado = super().save(*args,**kwargs,commit=False)
+        new_asado = super().save(*args, **kwargs, commit=False)
         new_asado.save()
         if self.is_valid():
             for user_name in self.cleaned_data['attendee'].all():
@@ -52,22 +53,24 @@ class AddAsadoForm(forms.ModelForm):
                 )
         return new_asado
 
+
 class AddUserForm(forms.ModelForm):
     class Meta:
         model = User
         labels = {
-            'name' : 'Nombre'
+            'name': 'Nombre'
         }
         fields = ['name']
+
 
 class AddAssignmentForm(forms.ModelForm):
     class Meta:
         model = Assignment
         labels = {
-            'required_supply' : 'Insumo',
-            'designated_user' : 'Invitado designado',
-            'comment' : 'Comentarios',
-            'required_quantity' : 'Cantidad'
+            'required_supply': 'Insumo',
+            'designated_user': 'Invitado designado',
+            'comment': 'Comentarios',
+            'required_quantity': 'Cantidad'
         }
 
         fields = [

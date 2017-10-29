@@ -1,20 +1,55 @@
 from django.test import TestCase
 from django.utils import timezone
-from .models import User,Asado,Invitation,Assignment,Supply,AssignmentValidationError
+from .models import (
+    User, Asado, Invitation, Assignment, Supply, AssignmentValidationError
+)
+from django.core.exceptions import ValidationError
 from datetime import datetime
-# Create your tests here.
+
+
+class AsadooTest(TestCase):
+
+    def setUp(self):
+        self.pyetr = User.objects.create(name='Pyetr')
+        self.balalaika = User.objects.create(name='Balalaika')
+
+        self.asado = Asado.objects.create(
+            organizer=self.pyetr,
+            datetime=timezone.now(),
+            place='Russya'
+        )
+
+    def test01_new_asado_has_no_invites(self):
+        self.assertFalse(self.asado.attendee.all())
+
+    def test02_can_invite_people_to_asado(self):
+        Invitation.objects.create(
+            asado=self.asado,
+            invite=self.balalaika
+        )
+
+    def test03_can_not_invite_organizer_to_his_own_asado(self):
+        with self.assertRaises(
+            ValidationError,
+            msg=Invitation.VALIDATION_ERROR_MSG
+        ):
+            Invitation.objects.create(
+                asado=self.asado,
+                invite=self.pyetr
+            )
+
 
 class AssignmentTestCase(TestCase):
     def setUp(self):
 
         space_cola = Supply.objects.create(
-            kind="drink",
+            kind='drink',
             description='Space-Cola',
             estimated_cost=25
         )
 
         colugo_head = Supply.objects.create(
-            kind="food",
+            kind='food',
             description="Colugo's head",
             estimated_cost=100
         )
@@ -30,13 +65,13 @@ class AssignmentTestCase(TestCase):
             place='Arabia'
         )
 
-        Invitation(asado=asado,invite=sinbad)
-        Invitation(asado=asado,invite=aladdin)
+        Invitation.objects.create(asado=asado, invite=sinbad)
+        Invitation.objects.create(asado=asado, invite=aladdin)
 
         self.drink_assignment = Assignment.objects.create(
             asado=asado,
             designated_user=sinbad,
-            comment="2L",
+            comment='2L',
             required_supply=space_cola,
             required_quantity=3
         )
@@ -45,7 +80,7 @@ class AssignmentTestCase(TestCase):
             asado=asado,
             designated_user=aladdin,
             required_supply=colugo_head,
-            comment="spicy please",
+            comment='spicy please',
             required_quantity=4
         )
 
