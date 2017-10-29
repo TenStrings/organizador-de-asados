@@ -5,6 +5,8 @@ from functools import partial
 from collections import defaultdict
 from abc import ABC, abstractmethod
 from django.core.exceptions import ValidationError
+from django.utils import timezone
+from datetime import timedelta
 
 
 class User(models.Model):
@@ -40,17 +42,31 @@ class Asado(models.Model):
     class Meta:
         ordering = ['datetime']
 
+    DATETIME_VALIDATION_ERROR = 'datetime must be in the future'
+
+    def clean(self):
+        if self.datetime + timedelta(milliseconds=100) < timezone.now():
+            raise ValidationError(
+                {'datetime': self.__class__.DATETIME_VALIDATION_ERROR}
+            )
+
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        super().save(*args, **kwargs)
+
 
 class Invitation(models.Model):
 
-    VALIDATION_ERROR_MSG = 'Organizer cannot be invited'
+    ORGANIZER_AS_INVITE_ERROR_MSG = 'Organizer cannot be invited'
 
     invite = models.ForeignKey(User, on_delete=models.CASCADE)
     asado = models.ForeignKey(Asado, on_delete=models.CASCADE)
 
     def clean(self):
         if self.invite == self.asado.organizer:
-            raise ValidationError(self.__class__.VALIDATION_ERROR_MSG)
+            raise ValidationError(
+                {'invite': self.__class__.ORGANIZER_AS_INVITE_ERROR_MSG}
+            )
 
     def save(self, *args, **kwargs):
         self.full_clean()

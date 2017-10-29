@@ -4,10 +4,10 @@ from .models import (
     User, Asado, Invitation, Assignment, Supply, AssignmentValidationError
 )
 from django.core.exceptions import ValidationError
-from datetime import datetime
+from datetime import timedelta
 
 
-class AsadooTest(TestCase):
+class AsadoTest(TestCase):
 
     def setUp(self):
         self.pyetr = User.objects.create(name='Pyetr')
@@ -22,21 +22,36 @@ class AsadooTest(TestCase):
     def test01_new_asado_has_no_invites(self):
         self.assertFalse(self.asado.attendee.all())
 
-    def test02_can_invite_people_to_asado(self):
+    def test02_datetime_must_be_in_the_future(self):
+        with self.assertRaises(ValidationError) as cm:
+            asado = Asado.objects.create(
+                organizer=self.balalaika,
+                datetime=timezone.now()-timedelta(days=1),
+                place='Polonia'
+            )
+        self.assertTrue(
+            Asado.DATETIME_VALIDATION_ERROR in
+            cm.exception.message_dict['datetime']
+        )
+
+        self.assertFalse(Asado.objects.filter(organizer=self.balalaika))
+
+    def test03_can_invite_people_to_asado(self):
         Invitation.objects.create(
             asado=self.asado,
             invite=self.balalaika
         )
 
-    def test03_can_not_invite_organizer_to_his_own_asado(self):
-        with self.assertRaises(
-            ValidationError,
-            msg=Invitation.VALIDATION_ERROR_MSG
-        ):
+    def test04_organizer_can_not_be_invited(self):
+        with self.assertRaises(ValidationError) as cm:
             Invitation.objects.create(
                 asado=self.asado,
                 invite=self.pyetr
             )
+        self.assertTrue(
+            Invitation.ORGANIZER_AS_INVITE_ERROR_MSG in
+            cm.exception.message_dict['invite']
+        )
 
 
 class AssignmentTestCase(TestCase):

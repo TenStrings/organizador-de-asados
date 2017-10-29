@@ -32,7 +32,6 @@ class AddAsadoForm(forms.ModelForm):
         fields = ['organizer', 'attendee', 'datetime', 'place']
 
     def clean_datetime(self):
-        print('is called')
         datetime = self.cleaned_data['datetime']
         if datetime < timezone.now():
             raise forms.ValidationError('Esa fecha ya pasó')
