@@ -10,4 +10,4 @@
  
 * Cargar los items
  
-  >python manage.py loaddata
+  >python manage.py loaddata supplies.json
