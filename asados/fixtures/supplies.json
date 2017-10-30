@@ -4,7 +4,7 @@
     "pk": 1,
     "fields": {
       "kind": "drink",
-      "description": "Agua destilada",
+      "description": "Agua",
       "estimated_cost": "10"
     }
   },
@@ -13,7 +13,7 @@
     "pk": 1,
     "fields": {
       "kind": "drink",
-      "description": "Hipoclorito de sodio",
+      "description": "Jugo de naranja",
       "estimated_cost": "70"
     }
   },
