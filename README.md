@@ -7,7 +7,3 @@
 * Instalar [django-datetime-widget](https://github.com/asaglimbeni/django-datetime-widget)
 
   >pip install django-datetime-widget
- 
-* Cargar los items
- 
-  >python manage.py loaddata supplies.json
