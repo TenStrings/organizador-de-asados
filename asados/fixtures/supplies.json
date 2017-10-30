@@ -10,7 +10,7 @@
   },
   {
     "model": "asados.Supply",
-    "pk": 1,
+    "pk": 2,
     "fields": {
       "kind": "drink",
       "description": "Jugo de naranja",
@@ -19,7 +19,7 @@
   },
   {
     "model": "asados.Supply",
-    "pk": 1,
+    "pk": 3,
     "fields": {
       "kind": "drink",
       "description": "Espectacola",
@@ -28,7 +28,7 @@
   },
   {
     "model": "asados.Supply",
-    "pk": 2,
+    "pk": 1,
     "fields": {
       "kind": "food",
       "description": "Chorizo",
@@ -37,7 +37,7 @@
   },
   {
     "model": "asados.Supply",
-    "pk": 3,
+    "pk": 2,
     "fields": {
       "kind": "food",
       "description": "Morcilla",
@@ -46,7 +46,7 @@
   },
   {
     "model": "asados.Supply",
-    "pk": 4,
+    "pk": 3,
     "fields": {
       "kind": "food",
       "description": "Provoleta",
