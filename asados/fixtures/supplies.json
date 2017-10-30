@@ -28,7 +28,7 @@
   },
   {
     "model": "asados.Supply",
-    "pk": 1,
+    "pk": 4,
     "fields": {
       "kind": "food",
       "description": "Chorizo",
@@ -37,7 +37,7 @@
   },
   {
     "model": "asados.Supply",
-    "pk": 2,
+    "pk": 5,
     "fields": {
       "kind": "food",
       "description": "Morcilla",
@@ -46,7 +46,7 @@
   },
   {
     "model": "asados.Supply",
-    "pk": 3,
+    "pk": 6,
     "fields": {
       "kind": "food",
       "description": "Provoleta",
