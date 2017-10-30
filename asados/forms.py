@@ -10,7 +10,6 @@ class AddAsadoForm(forms.ModelForm):
     class Meta:
         model = Asado
         dateTimeOptions = {
-            'format': 'dd/mm/yyyy hh:ii',
             'autoclose': True,
             'showMeridian': True,
             'clearBtn': True,
@@ -26,12 +25,12 @@ class AddAsadoForm(forms.ModelForm):
         }
         labels = {
             'organizer': 'Organizador',
-            'attendee': 'Invitados',
             'datetime': 'Fecha',
+            'attendee': 'Invitados',
             'place': 'Lugar'
         }
 
-        fields = ['organizer', 'attendee', 'datetime', 'place']
+        fields = ['organizer', 'datetime', 'attendee', 'place']
 
     class Media:
         js = ('asados/javascript/asado-form.js',)
